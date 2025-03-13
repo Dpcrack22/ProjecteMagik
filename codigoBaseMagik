@@ -1,0 +1,467 @@
+public class MainClass {
+
+	public static void main(String[] args) {
+		Carta[] cartas = new Carta[22];
+		cartas[0] = new Carta("Zorro de 9 colas", 4, 5, 4, 1);
+		cartas[1] =  new Carta("Gobblin", 5, 5, 4, 3);
+		cartas[2] = new Carta("Guerrero", 6, 4, 5, 4);
+		cartas[3] = new Carta("Piedrin", 1, 8, 1, 1);
+		cartas[4] = new Carta("Slime", 2, 3, 2, 2);
+		cartas[5] =  new Carta("Puerta de Baldur", 0,7,4,1);
+		cartas[6] = new Carta("Guiverno", 7, 4, 6, 9);
+		cartas[7] = new Carta("Ferrosaurio", 8, 6, 5, 7);
+		cartas[8] = new Carta("Balatro Balátrez",6,2,3,5);
+		cartas[9] = new Carta("Slime de Oro", 2, 1, 9, 10);
+		cartas[10] = new Carta("Gólem de piedra", 7, 8, 10, 1);
+		cartas[11] = new Carta("LoboLava",2,4,5,6);
+		cartas[12] = new Carta("Lightning ", 5, 6,4,5);
+		cartas[13] = new Carta("Cifosoa", 5, 3, 6, 1);
+		cartas[14] = new Carta("Minotauro", 3, 2, 2, 6);
+		cartas[15] = new Carta("Hacienda",9 , 10, 5, 7);
+		cartas[16] = new Carta("Gustavo Fring", 3, 7, 1, 6);
+		cartas[17] = new Carta("Rusello", 6, 6,2,4);
+		cartas[18] = new Carta("Hombre Menguante",8,8,9,4);
+		cartas[19] =  new Carta("Business Mundo",5,5,5,2);
+		cartas[20] =  new Carta("Centinela", 2, 8, 5, 3);
+		cartas[21] =  new Carta("segarro", 9, 5, 4, 3);		
+		
+//		for (int i=0; i<cartas.length;i++) {
+//			System.out.println("********************");
+//			System.out.println(cartas[i]);
+//		}
+		
+		JugadorCartas[] jugadores_cartas = new JugadorCartas[11];
+		jugadores_cartas[0] = new JugadorCartas("12345678L", "Gervasio", "de León Mora", 3, 20, 20);
+		jugadores_cartas[1] = new JugadorCartas("11111111H","Margarita","Flores Giménez",3,20,20);
+		jugadores_cartas[2] = new JugadorCartas("12312312A", "Pedro", "Sanchez", 3, 20, 20);
+		jugadores_cartas[3] = new JugadorCartas("46464646A", "Pepe", "García García", 3, 20, 20);
+		jugadores_cartas[4] = new JugadorCartas("88888888Y", "Eustaquio", "Avichuela", 3, 20, 20);
+		jugadores_cartas[5] = new JugadorCartas("45678934Z", "Cristian" , "Navarro Gonzalez", 3, 20, 20); 
+		jugadores_cartas[6] = new JugadorCartas("46845365N","Dolores","Suárez Castillo", 3, 20, 20);
+		jugadores_cartas[7] = new JugadorCartas("11112222A","Pablo","Suarez",3,20,20); 
+		jugadores_cartas[8] = new JugadorCartas("11223344M", "Ezequiel", "De todos los santos", 3, 20, 20);
+		jugadores_cartas[9] = new JugadorCartas("76547821D", "Marcos", "Fernández Martín", 3, 20, 20);
+		jugadores_cartas[10] = new JugadorCartas("84267193J","Inmaculada","Ponce",3,20,20);
+
+		
+		
+//		System.out.println("lalal");
+//		JugadorCartas a = jugadores_cartas[9];
+//		JugadorCartas b = jugadores_cartas[10];
+//		System.out.println(a == b);
+//		b = jugadores_cartas[9];
+//		System.out.println(a == b);
+		
+		//System.out.println( new JugadorCartas("84267193J","Inmaculada","Ponce",22,20,20) ==  new JugadorCartas("84267193J","Inmaculada","Ponce",22,20,20));
+		
+//		ContenedorCartas contenedorCartas = new ContenedorCartas();
+//		contenedorCartas.addCarta(new Carta("segarro", 9, 5, 4, 3));
+//		contenedorCartas.mostrarCartas();
+//		contenedorCartas.resetCartas();
+//		System.out.println("----------------------------------");
+//		contenedorCartas.mostrarCartas();
+		
+		ContenedorCartas contenedorCartas = new ContenedorCartas();
+		for (int i= 0 ; i < cartas.length ; i++) {
+			contenedorCartas.addCarta(cartas[i]);
+		}
+		ContenedorJugadoresCartas conatenedor_jugadores_cartas = new ContenedorJugadoresCartas();
+		conatenedor_jugadores_cartas.addJugador(jugadores_cartas[6]);
+		conatenedor_jugadores_cartas.addJugador(jugadores_cartas[7]);
+		conatenedor_jugadores_cartas.addJugador(jugadores_cartas[8]);
+		conatenedor_jugadores_cartas.addJugador(jugadores_cartas[9]);
+		conatenedor_jugadores_cartas.addJugador(jugadores_cartas[10]);
+		
+		PartidaCartas pc = new PartidaCartas(contenedorCartas,conatenedor_jugadores_cartas);
+		pc.jugar();
+		
+		for (int i=6 ; i<=10;i++) {
+			System.out.println(jugadores_cartas[i]);
+			System.out.println("*****************************");
+		}
+		
+		
+		
+	}
+
+}
+
+
+class PartidaCartas {
+	private ContenedorCartas contenedor_cartas_partida;
+	private ContenedorJugadoresCartas contenedor_jugadores_partida;
+	private JugadorCartas[] jugadores_turno;
+	int turno;
+	int numero_aleatorio;
+	int dano,reduccion,recuperacion_mana;
+	boolean acierto ;
+	Carta carta_atacante,carta_defensora;
+	public PartidaCartas(ContenedorCartas contenedor_cartas_partida,
+			ContenedorJugadoresCartas contenedor_jugadores_partida) {
+		super();
+		this.contenedor_cartas_partida = contenedor_cartas_partida;
+		this.contenedor_jugadores_partida = contenedor_jugadores_partida;
+	}
+	public void jugar() {
+		JugadorCartas[] jugadores_contenedor = contenedor_jugadores_partida.getJugadores_contenedor();
+		// reparto cartas
+		for (int i = 0; i<contenedor_jugadores_partida.getNUMERO_JUGADORES();i++ ) {
+			for (int j=0; j< contenedor_jugadores_partida.getNUMERO_CARTAS();j++) {
+				jugadores_contenedor[i].getCartas_jugador()[j] = contenedor_cartas_partida.getCartaAleatoria();
+			}
+		}
+		
+		//
+		
+		//fin reparto cartas
+		jugadores_turno = new JugadorCartas[2];
+		jugadores_turno = contenedor_jugadores_partida.getJugadoresAletorios();
+		
+		turno = ((int) (10*Math.random()))%2;
+		
+		while (jugadores_turno[0].getVida() > 0 && jugadores_turno[1].getVida() > 0) {
+			
+			carta_atacante = jugadores_turno[turno%2].getCartaAleatoria();
+			carta_defensora = jugadores_turno[(turno+1)%2].getCartaAleatoria();
+			recuperacion_mana = (int) (3*Math.random() + 1);
+			
+			if (jugadores_turno[turno%2].getMana() >= carta_atacante.getCosteMana()) {
+			
+				dano = carta_atacante.getAtaque() - (int) (carta_atacante.getAtaque()*carta_defensora.getDefensa()/10);
+				
+				numero_aleatorio = (int) (10*Math.random() + 1);
+				if ( numero_aleatorio > carta_atacante.getAgilidad()) {
+					acierto = false;
+				}else {
+					acierto =  true;
+				}
+				
+				jugadores_turno[turno%2].setMana(jugadores_turno[turno%2].getMana() - carta_atacante.getCosteMana() + recuperacion_mana );
+				if (acierto) {
+					jugadores_turno[(turno+1)%2].setVida(jugadores_turno[(turno+1)%2].getVida() - dano);
+				}
+				
+			}else {
+				jugadores_turno[turno%2].setMana(jugadores_turno[turno%2].getMana()+recuperacion_mana);
+			}
+			turno ++;
+		}
+		
+		
+		if (jugadores_turno[0].getVida() > 0) {
+			System.out.println("Ha ganado "+jugadores_turno[0].getNombre());
+			System.out.println("Ha perdido "+jugadores_turno[1].getNombre());
+		}else {
+			System.out.println("Ha ganado "+jugadores_turno[1].getNombre());
+			System.out.println("Ha perdido "+jugadores_turno[0].getNombre());
+		}
+		
+	}
+	
+	
+}
+
+
+abstract class Jugador{
+	String dni;
+	String nombre;
+	String apellidos;
+	
+	public Jugador(String dni, String nombre, String apellidos) {
+		super();
+		this.dni = dni;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellidos() {
+		return apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+	
+	public abstract String getStats() ;
+	
+	public String toString(){
+		return "Dni = " + dni+ "\n" + "Nombre = "+nombre+"\n"+"Apellidos = "+apellidos;
+	}
+	
+}
+
+class JugadorCartas extends Jugador{
+	private int numero_cartas;
+	private Carta[] cartas_jugador;
+	private int mana;
+	private int vida;
+	private int vida_inicial;
+	private int mana_inicial;
+	public JugadorCartas(String dni, String nombre, String apellidos, int numero_cartas, int mana, int vida) {
+		super(dni, nombre, apellidos);
+		this.numero_cartas = numero_cartas;
+		this.mana = mana;
+		this.vida = vida;
+		vida_inicial = vida;
+		mana_inicial = mana;
+		cartas_jugador = new Carta[numero_cartas];
+	}
+	public void reset_mana() {
+		mana = mana_inicial;
+	}
+	public void reset_vida() {
+		vida = vida_inicial;
+	}
+	public void reset_cartas_jugador(){
+		cartas_jugador = new Carta[numero_cartas];
+	}
+	public int getNumero_cartas() {
+		return numero_cartas;
+	}
+	public void setNumero_cartas(int numero_cartas) {
+		this.numero_cartas = numero_cartas;
+	}
+	public Carta[] getCartas_jugador() {
+		return cartas_jugador;
+	}
+	public void setCartas_jugador(Carta[] cartas_jugador) {
+		this.cartas_jugador = cartas_jugador;
+	}
+	public int getMana() {
+		return mana;
+	}
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+	public int getVida() {
+		return vida;
+	}
+	public void setVida(int vida) {
+		this.vida = vida;
+	}
+	public Carta getCartaAleatoria() {
+		int numero_aleatorio = (int) (numero_cartas*Math.random());
+		return cartas_jugador[numero_aleatorio];
+	}
+	public String toString(){
+		return super.toString()+"\n"+"Mana = "+mana+"\n"+"Vida = "+vida + "\n" + "Cartas = "+Arrays.toString(cartas_jugador); 
+	}
+	@Override
+	public String getStats() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}
+
+class Carta{
+	String nombre;
+	int ataque;
+	int defensa;
+	int costeMana;
+	int agilidad;
+	public Carta(String nombre, int ataque, int defensa, int costeMana, int agilidad) {
+		super();
+		this.ataque = ataque;
+		this.defensa = defensa;
+		this.costeMana = costeMana;
+		this.agilidad = agilidad;
+		this.nombre = nombre;
+	}
+	public int getAtaque() {
+		return ataque;
+	}
+	public void setAtaque(int ataque) {
+		this.ataque = ataque;
+	}
+	public int getDefensa() {
+		return defensa;
+	}
+	public void setDefensa(int defensa) {
+		this.defensa = defensa;
+	}
+	public int getCosteMana() {
+		return costeMana;
+	}
+	public void setCosteMana(int costeMana) {
+		this.costeMana = costeMana;
+	}
+	public int getAgilidad() {
+		return agilidad;
+	}
+	public void setAgilidad(int agilidad) {
+		this.agilidad = agilidad;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String toString(){
+		// String nombre, int ataque, int defensa, int costeMana, int agilidad
+		return "Nombre = "+nombre+"\n" +"Ataque = "+ataque+"\n" +"Defensa = "+defensa+"\n" +"costeMana = "+costeMana+"\n" +"Agilidad = "+agilidad;
+	}
+}
+
+class ContenedorCartas{
+	private final int NUMERO_CARTAS = 22;
+	private Carta[] cartas = new Carta[NUMERO_CARTAS];
+	private int[] cartasEscogidas = new int[NUMERO_CARTAS];
+	
+	
+	
+	
+	public void addCarta(Carta carta) {
+		for (int i=0; i<cartas.length;i++) {
+			if (cartas[i] == null) {
+				cartas[i] = carta;
+				System.out.println("Carta insertada en la posicion "+i);
+				return;
+			}
+		}
+		System.out.println("No hay espacio para mas cartas");
+	}
+	public void resetCartas() {
+		cartas = new Carta[22];
+		cartasEscogidas = new int[cartas.length];
+	}
+	public void resetCartasEscogidas() {
+		cartasEscogidas = new int[cartas.length];
+	}
+	public void mostrarCartas() {
+		for (int i=0; i<cartas.length;i++) {
+			System.out.println("********************");
+			System.out.println(cartas[i]);
+		}
+	}
+	public Carta getCartaAleatoria() {
+		int numRandom;
+		int num_cartas_escogidas = 0;
+		if (!contenedor_lleno()) {
+			System.out.println("Todavia faltan cartas por insertar");
+			return null;
+		}
+		
+		for (int i=0; i<NUMERO_CARTAS;i++) {
+			num_cartas_escogidas += cartasEscogidas[i];
+		}
+		if (num_cartas_escogidas == NUMERO_CARTAS) {
+			System.out.println("Ya no se pueden escoger mas cartas");
+			return null;
+		}
+		
+//		numRandom = (int) (NUMERO_CARTAS*Math.random());
+//		while (cartasEscogidas[numRandom] == 1) {
+//			numRandom = (int) (NUMERO_CARTAS*Math.random());
+//		}
+//		
+		do {
+			numRandom = (int) (NUMERO_CARTAS*Math.random());
+		}while (cartasEscogidas[numRandom] == 1);
+		
+		
+		cartasEscogidas[numRandom] = 1;
+		return cartas[numRandom];
+	}
+	
+	public boolean contenedor_lleno() {
+		for (int i =0; i< NUMERO_CARTAS ; i++) {
+			if ( cartas[i] == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
+class ContenedorJugadoresCartas{
+	private final int NUMERO_CARTAS = 3;
+	private final int NUMERO_JUGADORES = 5;
+	private JugadorCartas[] jugadores_contenedor = new JugadorCartas[NUMERO_JUGADORES];
+	
+	
+	public void addJugador(JugadorCartas jugador) {
+		for (int i = 0; i< NUMERO_JUGADORES ; i++) {
+			if (jugadores_contenedor[i] == null) {
+				jugadores_contenedor[i] = jugador;
+				System.out.println("Jugador añadido correctamente");
+				return ;
+			}
+		}
+		System.out.println("No se ha podido añadir al jugador");
+	}
+	
+	public JugadorCartas[] getJugadoresAletorios() {
+		JugadorCartas[] jugadores_aleatorios = new JugadorCartas[2]; 
+		int numero_aleatorio;
+		
+		if (!contenedor_lleno()) {
+			System.out.println("Primero llena el contenedor");
+			return null;
+		}
+		do {
+			numero_aleatorio = (int) (NUMERO_JUGADORES*Math.random());
+		}while (jugadores_contenedor[numero_aleatorio].getVida() == 0);
+		jugadores_aleatorios[0] = jugadores_contenedor[numero_aleatorio];
+		
+		do {
+			numero_aleatorio = (int) (NUMERO_JUGADORES*Math.random());
+		}while(jugadores_aleatorios[0]== jugadores_contenedor[numero_aleatorio] || jugadores_contenedor[numero_aleatorio].getVida() == 0);
+		jugadores_aleatorios[1] = jugadores_contenedor[numero_aleatorio];
+		
+		return jugadores_aleatorios;
+	}
+	public boolean ganador() {
+		int numero_jugadores_vida = 0;
+		for (int i = 0; i< NUMERO_JUGADORES ; i++) {
+			if (jugadores_contenedor[i].getVida() > 0) {
+				numero_jugadores_vida ++;
+			}
+		}
+		if ( numero_jugadores_vida > 1) {
+			return false;
+		}
+		return true;
+	}
+	public boolean contenedor_lleno() {
+		for (int i = 0; i< NUMERO_JUGADORES ; i++) {
+			if (jugadores_contenedor[i] == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public JugadorCartas[] getJugadores_contenedor() {
+		return jugadores_contenedor;
+	}
+
+	public int getNUMERO_CARTAS() {
+		return NUMERO_CARTAS;
+	}
+
+	public int getNUMERO_JUGADORES() {
+		return NUMERO_JUGADORES;
+	}
+	
+	
+}
+
